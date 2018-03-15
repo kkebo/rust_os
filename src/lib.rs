@@ -19,15 +19,33 @@ pub extern "C" fn rust_main(multiboot_information_address: usize) {
     println!("Hello, World{}", "!");
 
     let boot_info = unsafe { multiboot2::load(multiboot_information_address) };
-    let memory_map_tag = boot_info.memory_map_tag().expect("Memory map tag required");
 
     println!("memory areas:");
-    memory_map_tag.memory_areas().for_each(|area| {
-        println!(
-            "    start: 0x{:x}, size: 0x{:x}",
-            area.start_address(), area.size()
-        )
-    });
+    boot_info
+        .memory_map_tag()
+        .expect("Memory map tag required")
+        .memory_areas()
+        .for_each(|area| {
+            println!(
+                "    start: 0x{:x}, size: 0x{:x}",
+                area.start_address(),
+                area.size()
+            )
+        });
+
+    println!("kernle sections:");
+    boot_info
+        .elf_sections_tag()
+        .expect("Elf-sections tag required")
+        .sections()
+        .for_each(|section| {
+            println!(
+                "    addr: 0x{:x}, size: 0x{:x}, flags: 0x{:x}",
+                section.start_address(),
+                section.size(),
+                section.flags().bits()
+            )
+        });
 
     loop {}
 }
