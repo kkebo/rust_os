@@ -3,9 +3,6 @@ name = "rust_os"
 version = "0.1.0"
 authors = ["Kenta Kubo <601636+kkk669@users.noreply.github.com>"]
 
-[lib]
-crate-type = ["staticlib"]
-
 [dependencies]
 multiboot2 = "0.5.0"
 rlibc = "1.0"
