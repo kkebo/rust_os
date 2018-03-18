@@ -54,11 +54,13 @@ pub struct Writer {
     buffer: Unique<Buffer>,
 }
 
-pub static WRITER: Mutex<Writer> = Mutex::new(Writer {
-    column_position: 0,
-    color_code: ColorCode::new(Color::LightGreen, Color::Black),
-    buffer: unsafe { Unique::new_unchecked(0xb8000 as *mut _) },
-});
+lazy_static! {
+    pub static ref WRITER: Mutex<Writer> = Mutex::new(Writer {
+        column_position: 0,
+        color_code: ColorCode::new(Color::LightGreen, Color::Black),
+        buffer: unsafe { Unique::new_unchecked(0xb8000 as *mut _) },
+    });
+}
 
 impl Writer {
     pub fn write_byte(&mut self, byte: u8) {
