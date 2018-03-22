@@ -13,13 +13,9 @@
     "panic-strategy": "abort",
     "pre-link-args": {
         "lld-link": [
-            "/NOLOGO",
-            "/NXCOMPAT",
             "/Subsystem:EFI_Application",
-            "/Machine:x64",
             "/Entry:uefi_main"
         ]
     },
-    "exe-suffix": ".efi",
-    "is-like-windows": true
+    "exe-suffix": ".efi"
 }
