@@ -1,8 +1,13 @@
 build: format
     xargo build --release --target x86_64-rust_os
 
+rebuild: clean format build
+
 format:
     cargo fmt
+
+clean:
+    cargo clean
 
 run: build
     mkdir -p image/efi/boot
