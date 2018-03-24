@@ -19,7 +19,7 @@ pub(crate) static mut UEFI_SYSTEM_TABLE: Option<&'static uefi::SystemTable> = No
 
 #[no_mangle]
 pub extern "win64" fn uefi_main(
-    handle: uefi::Handle,
+    _handle: uefi::Handle,
     system_table: &'static uefi::SystemTable,
 ) -> uefi::Status {
     unsafe { UEFI_SYSTEM_TABLE = Some(&system_table) };
