@@ -139,7 +139,7 @@ impl SimpleTextOutputProtocol {
                 print_new_line = true;
             }
 
-            let mut buffer = &mut [NULL_CHARACTER; 256];
+            let buffer = &mut [NULL_CHARACTER; 256];
             let mut ucs2_chars_vec = FixedVec::new(&mut buffer[0..255]);
 
             for character in line.chars() {

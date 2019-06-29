@@ -2,6 +2,7 @@
 name = "rust_os"
 version = "0.1.0"
 authors = ["Kenta Kubo <601636+kkk669@users.noreply.github.com>"]
+edition = "2018"
 
 [dependencies]
 fixedvec = "0.2.3"

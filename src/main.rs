@@ -1,24 +1,21 @@
 #![feature(compiler_builtins_lib)]
 #![feature(const_fn)]
-#![feature(const_unique_new)]
 #![feature(lang_items)]
 #![feature(ptr_internals)]
 #![feature(try_trait)]
-#![feature(unique)]
 #![no_std]
 #![no_main]
-
-extern crate compiler_builtins;
-extern crate fixedvec;
 
 #[macro_use]
 mod print;
 mod uefi;
 
+use core::panic::PanicInfo;
+
 pub(crate) static mut UEFI_SYSTEM_TABLE: Option<&'static uefi::SystemTable> = None;
 
 #[no_mangle]
-pub extern "win64" fn uefi_main(
+pub extern "win64" fn efi_main(
     _handle: uefi::Handle,
     system_table: &'static uefi::SystemTable,
 ) -> uefi::Status {
@@ -41,10 +38,13 @@ fn main() {
 #[no_mangle]
 pub extern "C" fn eh_personality() {}
 
-#[lang = "panic_fmt"]
-#[no_mangle]
-pub extern "C" fn panic_fmt(fmt: core::fmt::Arguments, file: &'static str, line: u32) -> ! {
-    println!("\n\nPANIC in {} at line {}:", file, line);
-    println!("    {}", fmt);
+#[panic_handler]
+fn panic(info: &PanicInfo) -> ! {
+    if let Some(s) = info.payload().downcast_ref::<&str>() {
+        println!("panic occurred: {:?}", s);
+    } else {
+        println!("panic occurred");
+    }
+
     loop {}
 }

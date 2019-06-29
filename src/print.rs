@@ -27,10 +27,11 @@ macro_rules! println {
 }
 
 pub fn write_fmt(args: fmt::Arguments) -> fmt::Result {
-    use uefi::SimpleTextOutputProtocol as Console;
+    use crate::uefi::SimpleTextOutputProtocol as Console;
     Write::write_fmt(
         unsafe {
-            &mut *(::UEFI_SYSTEM_TABLE.unwrap().get_console_out() as *const Console as *mut Console)
+            &mut *(crate::UEFI_SYSTEM_TABLE.unwrap().get_console_out() as *const Console
+                as *mut Console)
         },
         args,
     )
