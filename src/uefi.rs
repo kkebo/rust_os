@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use core::fmt;
+
 const MOST_SIGNIFICANT_BIT: usize = usize::max_value() - usize::max_value() / 2;
 const STATUS_ERROR_MASK: usize = MOST_SIGNIFICANT_BIT;
 
@@ -116,8 +118,6 @@ impl SimpleTextOutputProtocol {
         (self.output_string)(self as *const _, ucs2_chars)
     }
 }
-
-use core::fmt;
 
 impl SimpleTextOutputProtocol {
     fn print_null_terminated_ucs2(&mut self, ucs2_chars: &[u16]) -> Status {

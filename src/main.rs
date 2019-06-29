@@ -6,13 +6,12 @@
 #![no_std]
 #![no_main]
 
-#[macro_use]
 mod print;
 mod uefi;
 
 use core::panic::PanicInfo;
 
-pub(crate) static mut UEFI_SYSTEM_TABLE: Option<&'static uefi::SystemTable> = None;
+static mut UEFI_SYSTEM_TABLE: Option<&'static uefi::SystemTable> = None;
 
 #[no_mangle]
 pub extern "win64" fn efi_main(
