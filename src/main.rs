@@ -1,5 +1,6 @@
 #![no_std]
 #![no_main]
+#![feature(asm)]
 
 use uefi::prelude::*;
 
@@ -20,5 +21,7 @@ pub extern "C" fn efi_main(_image: uefi::Handle, st: SystemTable<Boot>) -> Statu
 fn main() {
     log::info!("Hello, World{}", "!");
 
-    loop {}
+    loop {
+        unsafe { asm!("hlt") }
+    }
 }
