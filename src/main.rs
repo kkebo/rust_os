@@ -1,49 +1,24 @@
-#![feature(compiler_builtins_lib)]
-#![feature(const_fn)]
-#![feature(lang_items)]
-#![feature(ptr_internals)]
-#![feature(try_trait)]
 #![no_std]
 #![no_main]
 
-mod print;
-mod uefi;
-
-use core::panic::PanicInfo;
-
-static mut UEFI_SYSTEM_TABLE: Option<&'static uefi::SystemTable> = None;
+use uefi::prelude::*;
 
 #[no_mangle]
-pub extern "win64" fn efi_main(
-    _handle: uefi::Handle,
-    system_table: &'static uefi::SystemTable,
-) -> uefi::Status {
-    unsafe { UEFI_SYSTEM_TABLE = Some(&system_table) };
+pub extern "C" fn efi_main(_image: uefi::Handle, st: SystemTable<Boot>) -> Status {
+    // Initialize utilities (logging, memory allocation...)
+    uefi_services::init(&st).expect_success("Failed to initialize utilities");
 
-    println!("UEFI header: {:#?}", system_table.get_header());
+    st.stdout()
+        .reset(false)
+        .expect_success("Failed to reset stdout");
 
     main();
 
-    uefi::Status::Success
+    Status::SUCCESS
 }
 
 fn main() {
-    println!("Hello, World{}", "!");
-
-    loop {}
-}
-
-#[lang = "eh_personality"]
-#[no_mangle]
-pub extern "C" fn eh_personality() {}
-
-#[panic_handler]
-fn panic(info: &PanicInfo) -> ! {
-    if let Some(s) = info.payload().downcast_ref::<&str>() {
-        println!("panic occurred: {:?}", s);
-    } else {
-        println!("panic occurred");
-    }
+    log::info!("Hello, World{}", "!");
 
     loop {}
 }

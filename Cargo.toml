@@ -5,8 +5,13 @@ authors = ["Kenta Kubo <601636+kkk669@users.noreply.github.com>"]
 edition = "2018"
 
 [dependencies]
-fixedvec = "0.2.3"
+log = { version = "0.4", default-features = false }
+uefi = { git = "https://github.com/rust-osdev/uefi-rs.git" }
+uefi-services = { git = "https://github.com/rust-osdev/uefi-rs.git" }
+uefi-exts = { git = "https://github.com/rust-osdev/uefi-rs.git" }
+
+[profile.dev]
+panic = "abort"
 
 [profile.release]
-debug = true
-lto = true
+panic = "abort"
