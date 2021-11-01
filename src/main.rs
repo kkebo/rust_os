@@ -5,9 +5,9 @@
 use uefi::prelude::*;
 
 #[no_mangle]
-pub extern "C" fn efi_main(_image: uefi::Handle, st: SystemTable<Boot>) -> Status {
+pub extern "C" fn efi_main(_image: uefi::Handle, mut st: SystemTable<Boot>) -> Status {
     // Initialize utilities (logging, memory allocation...)
-    uefi_services::init(&st).expect_success("Failed to initialize utilities");
+    uefi_services::init(&mut st).expect_success("Failed to initialize utilities");
 
     st.stdout()
         .reset(false)
